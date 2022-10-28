@@ -1176,7 +1176,7 @@ export class JsonSchemaGenerator {
 
     private recursiveTypeRef = new Map();
 
-    private getTypeDefinition(
+    public getTypeDefinition(
         typ: ts.Type,
         asRef = this.args.ref,
         unionModifier: string = "anyOf",
