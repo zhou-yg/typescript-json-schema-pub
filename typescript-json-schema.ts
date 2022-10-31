@@ -760,7 +760,7 @@ export class JsonSchemaGenerator {
         if (valDecl?.initializer) {
             let initial = valDecl.initializer;
 
-            while (ts.isTypeAssertion(initial)) {
+            while (ts.isTypeAssertionExpression(initial)) {
                 initial = initial.expression;
             }
 
@@ -1319,8 +1319,10 @@ export class JsonSchemaGenerator {
                 if (asTypeAliasRef && reffedType && typ.symbol !== reffedType && symbol) {
                     reffedDefinition = this.getTypeDefinition(typ, true, undefined, symbol, symbol);
                 } else {
+                    // 将当前类型的结构定义塞到全局，通过修改引用来实现类型的正确定义
                     reffedDefinition = definition;
                 }
+                // 全部set，在类型自举的case中，可以防止死循环，
                 this.reffedDefinitions[fullTypeName] = reffedDefinition;
                 if (this.args.titles && fullTypeName) {
                     definition.title = fullTypeName;
